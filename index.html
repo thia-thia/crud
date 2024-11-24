@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html ng-app="patientApp">
+<head>
+    <title>Patient Management System</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="app.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form, .patient-list {
+            margin-bottom: 20px;
+        }
+        button {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body ng-controller="PatientController">
+    <h1>Patient Management System</h1>
+
+    <!-- Add/Edit Patient Form -->
+    <form ng-submit="savePatient()">
+        <label>Name:</label>
+        <input type="text" ng-model="newPatient.name" required>
+        <label>Age:</label>
+        <input type="number" ng-model="newPatient.age" required>
+        <label>Date:</label>
+        <input type="date" ng-model="newPatient.date" required>
+        <button type="submit">{{ editing ? 'Update Patient' : 'Add Patient' }}</button>
+        <button type="button" ng-click="cancelEdit()" ng-show="editing">Cancel</button>
+    </form>
+
+    <!-- Search and Sort -->
+    <label>Search:</label>
+    <input type="text" ng-model="searchQuery" ng-change="fetchPatients()">
+    <label>Sort By:</label>
+    <select ng-model="sortOption" ng-change="fetchPatients()">
+        <option value="age">Age</option>
+        <option value="date">Date</option>
+    </select>
+
+    <!-- Patient List -->
+    <h2>Patient List</h2>
+    <ul class="patient-list">
+        <li ng-repeat="patient in patients">
+            {{ patient.name }} - {{ patient.age }} - {{ patient.date | date:'shortDate' }}
+            <button ng-click="editPatient(patient)">Edit</button>
+            <button ng-click="deletePatient(patient._id)">Delete</button>
+        </li>
+    </ul>
+</body>
+</html>
